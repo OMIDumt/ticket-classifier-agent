@@ -1,10 +1,4 @@
 fastapi
-uvicorn[standard]
-datasets
-scikit-learn
-pandas
-mlflow
-python-dotenv
+uvicorn
 requests
-pytest
-gunicorn
+pydantic
