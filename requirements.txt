@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+transformers
+datasets
+torch
+scikit-learn
+pandas
+mlflow
+python-dotenv
+requests
+pytest
+gunicorn

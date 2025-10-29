@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+
+# Virtual environment
+venv/
+env/
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# Data & models
+data/raw/
+data/processed/
+models/
+*.pt
+*.pkl
+*.h5
+*.ckpt
+
+# n8n
+n8n_data/
+
+# Logs
+*.log
+logs/
+output/
+tmp/
+
+# OS files
+.DS_Store
+Thumbs.db
