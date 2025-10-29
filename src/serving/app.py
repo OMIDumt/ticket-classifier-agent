@@ -12,6 +12,11 @@ import numpy as np
 # ------------------------
 app = FastAPI(title="Ticket Classifier API")
 
+HF_API_URL = "https://api-inference.huggingface.co/models/distilbert-base-uncased"
+HF_TOKEN = os.getenv("HF_TOKEN")  # we’ll add this in Render later
+
+headers = {"Authorization": f"Bearer {HF_TOKEN}"}
+
 # Use Hugging Face model if local model doesn't exist
 MODEL_NAME = os.getenv("PRETRAINED", "distilbert-base-uncased-finetuned-sst-2-english")
 MODEL_DIR = os.getenv("MODEL_DIR", "models/model-1")
@@ -61,10 +66,19 @@ class PredictRequest(BaseModel):
 async def predict(request: Request):
     data = await request.json()
     text = data["text"]
-    inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True)
-    outputs = model(**inputs)
-    predicted_class = torch.argmax(outputs.logits, dim=1).item()
-    return {"label": str(predicted_class)}
+
+    response = requests.post(HF_API_URL, headers=headers, json={"inputs": text})
+    result = response.json()
+
+    # Handle errors gracefully
+    if "error" in result:
+        return {"error": result["error"]}
+
+    # Extract prediction
+    label = result[0][0]["label"] if isinstance(result, list) else "unknown"
+    score = result[0][0]["score"] if isinstance(result, list) else None
+
+    return {"label": label, "score": score}
 
     inputs = tokenizer(text, truncation=True, padding=True, return_tensors="pt", max_length=256).to(device)
     with torch.no_grad():

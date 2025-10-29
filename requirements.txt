@@ -1,8 +1,6 @@
 fastapi
 uvicorn[standard]
-transformers
 datasets
-torch
 scikit-learn
 pandas
 mlflow
